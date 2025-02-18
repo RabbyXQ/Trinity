@@ -228,7 +228,45 @@ def main(base_dir, main_file):
     plot_char_frequencies(char_freq)
     fourier_analysis(char_freq)
 
-if __name__ == "__main__":
-    project_dir = "./NileSpider"
-    main_java_file = "./src/main/java/nilespider/app/views/MainActivity.java"
-    main(project_dir, main_java_file)
+
+def analyze_all_java_files(base_dir, main_file):
+    # Read and process the main file
+    file_path = os.path.join(base_dir, main_file)
+    if not os.path.exists(file_path):
+        print("Main file not found!")
+        return
+    
+    # Process the main file
+    text = read_java_file(file_path)
+    classes, imports, method_references = parse_classes_and_dependencies(text)
+    print(f"Classes: {classes}\nImports: {imports}\nMethod References: {method_references}")
+
+    # Apply z-score and GESD anomaly detection
+    char_freq = calculate_char_frequency(text)
+    anomalies_zscore = zscore_detection(char_freq)
+    anomalies_gesd = gesd_detection(char_freq)
+    anomalies_quantile = quantile_detection(char_freq)
+    
+    print("Anomalies detected using Z-Score:", anomalies_zscore)
+    print("Anomalies detected using GESD:", anomalies_gesd)
+    print("Anomalies detected using Quantile:", anomalies_quantile)
+
+    # Perform Fourier Transform analysis
+    fft_values = fourier_transform_analysis(text)
+    print(f"Fourier Transform Values: {fft_values}")
+
+    # Calculate Entropy
+    entropy = calculate_entropy(char_freq)
+    print(f"Entropy: {entropy}")
+
+    # Check for potential steganography based on rules and ML
+    detect_steganography(text, anomalies_zscore, entropy, fft_values)
+    detect_hidden_message(text)
+
+
+# Start the analysis on a test file (replace with an actual file path)
+base_dir = "./jsoup"  # Change to the directory containing the files
+main_file = "./src/main/java/org/jsoup/examples/HtmlToPlainText.java"  # Replace with your Java file
+
+# Uncomment below to run the analysis
+analyze_all_java_files(base_dir, main_file)

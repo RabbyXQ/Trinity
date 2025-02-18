@@ -1,4 +1,4 @@
-public class Leona {
+public class Madman {
     public static void main(String[] args) {
         // Hidden message inside array indices
         int[] data = {15, 8, 20, 20, 5, 18};  // ASCII values for "H", "I", "D", "D", "E", "R"
