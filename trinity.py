@@ -13,7 +13,7 @@ stegoFiles = set()
 # Step 1: Read the Java file
 def read_java_file(file_path):
     """Reads the content of a Java file."""
-    with open(file_path, 'r', encoding='utf-8') as file:
+    with open(file_path, 'r', encoding='utf-8', errors='ignore') as file:
         return file.read()
 
 # Step 2: Parse Java Classes and Dependencies using javalang

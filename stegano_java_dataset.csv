@@ -1,0 +1,2191 @@
+code,label
+"public class ASCIIStego {
+    public static void main(String[] args) {
+        System.out.println(""Executing Java program..."");
+        
+        String ascii = 
+            ""  /\\_/\\  \n"" +
+            "" ( o.o )  \n"" +
+            "" > ^ ^ <  \n"" +
+            ""Stego"";
+        
+        System.out.println(ascii);
+    }
+}
+",1
+"import org.w3c.dom.*;
+import javax.xml.parsers.*;
+import java.util.Base64;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+
+public class XMLStego {
+    public static void main(String[] args) {
+        try {
+            // Hidden message to encode
+            String secretMessage = ""HiddenStegoMessage123"";
+            String encodedMessage = Base64.getEncoder().encodeToString(secretMessage.getBytes());
+
+            // Create new XML document
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.newDocument();
+
+            // Create root element
+            Element root = document.createElement(""root"");
+
+            // Add steganographic message as an attribute
+            root.setAttribute(""hiddenMessage"", encodedMessage);
+
+            // Append root element to document
+            document.appendChild(root);
+
+            // Write the document to a file
+            FileOutputStream fileStream = new FileOutputStream(""stego_file.xml"");
+            OutputStreamWriter writer = new OutputStreamWriter(fileStream, ""UTF-8"");
+            writeXMLDocumentToStream(document, writer);
+
+            System.out.println(""✅ Stego message hidden in XML: stego_file.xml"");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Helper method to write the XML document to a stream
+    private static void writeXMLDocumentToStream(Document document, OutputStreamWriter writer) throws Exception {
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.setOutputProperty(OutputKeys.INDENT, ""yes"");
+        transformer.transform(new DOMSource(document), new StreamResult(writer));
+    }
+}
+",1
+"public class ArrayStego {
+    public static void main(String[] args) {
+        int[] secret = { 83, 116, 101, 103, 97, 110, 111, 103, 114, 97, 112, 104, 121 };
+
+        System.out.print(""Executing program... "");
+        for (int ch : secret) {
+            System.out.print((char) ch); // Decodes to ""Steganography""
+        }
+    }
+}
+",1
+"import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
+
+public class BitmapStego {
+    
+    public static void hideMessage(String imagePath, String message, String outputPath) throws Exception {
+        BufferedImage image = ImageIO.read(new File(imagePath));
+        int msgIndex = 0;
+        int msgLength = message.length();
+        message += ""\0""; // Null terminator to mark end of message
+
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                int pixel = image.getRGB(x, y);
+                int blue = pixel & 0xFF;
+                
+                if (msgIndex < msgLength) {
+                    char msgChar = message.charAt(msgIndex);
+                    blue = (blue & 0xFE) | ((msgChar >> (msgIndex % 8)) & 1); // Modify LSB
+                    msgIndex++;
+                }
+                
+                int newPixel = (pixel & 0xFFFFFF00) | blue;
+                image.setRGB(x, y, newPixel);
+            }
+        }
+        ImageIO.write(image, ""bmp"", new File(outputPath));
+        System.out.println(""Message hidden successfully in "" + outputPath);
+    }
+
+    public static String extractMessage(String imagePath) throws Exception {
+        BufferedImage image = ImageIO.read(new File(imagePath));
+        StringBuilder message = new StringBuilder();
+        char currentChar = 0;
+        int bitIndex = 0;
+        
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                int pixel = image.getRGB(x, y);
+                int blue = pixel & 0xFF;
+                
+                currentChar |= (blue & 1) << (bitIndex % 8);
+                bitIndex++;
+                
+                if (bitIndex % 8 == 0) {
+                    if (currentChar == '\0') return message.toString();
+                    message.append(currentChar);
+                    currentChar = 0;
+                }
+            }
+        }
+        return message.toString();
+    }
+
+    public static void main(String[] args) throws Exception {
+        String inputImage = ""input.bmp"";
+        String outputImage = ""stego.bmp"";
+        String hiddenMessage = ""Hidden message inside BMP!"";
+
+        hideMessage(inputImage, hiddenMessage, outputImage);
+        System.out.println(""Extracted: "" + extractMessage(outputImage));
+    }
+}",1
+"/**
+ * This is a normal JavaDoc comment.
+ * <p>
+ * Secret: SGVsbG8gd29ybGQ= (Base64 for ""Hello world"")
+ */
+public class JavadocStego {
+    public static void main(String[] args) {
+        System.out.println(""Running Java program..."");
+    }
+}
+",1
+"import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Base64;
+import java.util.Random;
+
+public class CustomHTMLStegoGenerator {
+
+    // Hidden message options (you can customize this list)
+    private static final String[] HIDDEN_MESSAGES = {
+        ""SecretMessage123"",
+        ""MaliciousCodeHere"",
+        ""InvisibleData"",
+        ""Base64EncodedSecret"",
+        ""HiddenInPlainSight""
+    };
+
+    // Method to generate a random hidden message
+    private static String getRandomMessage() {
+        Random random = new Random();
+        return HIDDEN_MESSAGES[random.nextInt(HIDDEN_MESSAGES.length)];
+    }
+
+    // Method to encode message in Base64
+    private static String encodeBase64(String message) {
+        return Base64.getEncoder().encodeToString(message.getBytes());
+    }
+
+    // Method to generate HTML content with different steganographic techniques
+    private static String generateHTML(String hiddenMessage, boolean useBase64, boolean useComment, boolean useJavaScript) {
+        String htmlContent = ""<html>\n<head><title>Custom Stego HTML</title></head>\n<body>\n"";
+
+        if (useBase64) {
+            String base64Message = encodeBase64(hiddenMessage);
+            htmlContent += ""  <div id='hiddenMessage' data-secret='"" + base64Message + ""'>This is a normal div.</div>\n"";
+        }
+
+        if (useComment) {
+            htmlContent += ""  <!-- "" + hiddenMessage + "" -->\n"";
+        }
+
+        if (useJavaScript) {
+            htmlContent += ""  <script>\n"" +
+                           ""    var secretData = '"" + hiddenMessage + ""';\n"" +
+                           ""    console.log(secretData);\n"" +
+                           ""  </script>\n"";
+        }
+
+        htmlContent += ""  <div>This is a normal div with no hidden data.</div>\n"";
+        htmlContent += ""</body>\n</html>"";
+
+        return htmlContent;
+    }
+
+    // Method to create and write a custom HTML file
+    private static void createHTMLFile(String filename, String hiddenMessage, boolean useBase64, boolean useComment, boolean useJavaScript) {
+        try {
+            // Generate the HTML content with hidden data
+            String htmlContent = generateHTML(hiddenMessage, useBase64, useComment, useJavaScript);
+
+            // Write the content to an HTML file
+            FileWriter fileWriter = new FileWriter(filename);
+            fileWriter.write(htmlContent);
+            fileWriter.close();
+
+            System.out.println(""✅ Stego HTML file created: "" + filename);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        // Example: Generate 10 custom HTML files with different hidden messages and techniques
+        for (int i = 1; i <= 10; i++) {
+            String hiddenMessage = getRandomMessage();
+            boolean useBase64 = i % 2 == 0;  // Use Base64 on even files
+            boolean useComment = i % 3 == 0; // Use comment on files divisible by 3
+            boolean useJavaScript = i % 2 == 1; // Use JavaScript on odd files
+
+            // Define filename
+            String filename = ""stego_custom_"" + i + "".html"";
+
+            // Create custom HTML file with steganographic content
+            createHTMLFile(filename, hiddenMessage, useBase64, useComment, useJavaScript);
+        }
+    }
+}
+",1
+"public class ObfuscationStego {
+    public static void main(String[] args) {
+        char[] msg = { 0x53, 0x74, 0x65, 0x67, 0x6F }; // ASCII for ""Stego""
+        System.out.println(""Running program..."");
+    }
+}
+",1
+"import java.io.FileWriter;
+import java.io.IOException;
+
+public class HTMLStegoComment {
+    public static void main(String[] args) {
+        try {
+            // Hidden message to embed in HTML comments
+            String secretMessage = ""HiddenMessageInHTMLComment"";
+
+            // Create HTML content with hidden message in a comment
+            String htmlContent = ""<html>\n"" +
+                                 ""<head><title>Stego HTML</title></head>\n"" +
+                                 ""<body>\n"" +
+                                 ""  <!-- "" + secretMessage + "" -->\n"" +
+                                 ""  <div>This is a normal div.</div>\n"" +
+                                 ""</body>\n"" +
+                                 ""</html>"";
+
+            // Write to an HTML file
+            FileWriter fileWriter = new FileWriter(""stego_comment.html"");
+            fileWriter.write(htmlContent);
+            fileWriter.close();
+
+            System.out.println(""✅ Hidden message inside HTML comment: stego_comment.html"");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+",1
+"public class MethodStego {
+    public static void main(String[] args) {
+        SecretHiddenMessage(); // The hidden message is in the method name
+    }
+
+    private static void SecretHiddenMessage() {
+        System.out.println(""Executing Java Program..."");
+    }
+}
+",1
+"import java.io.FileWriter;
+import java.io.IOException;
+
+public class HTMLStegoJS {
+    public static void main(String[] args) {
+        try {
+            // Hidden message to embed in JavaScript
+            String secretMessage = ""HiddenMessageInJavaScript"";
+
+            // Create HTML content with hidden message in JavaScript
+            String htmlContent = ""<html>\n"" +
+                                 ""<head><title>Stego HTML</title></head>\n"" +
+                                 ""<body>\n"" +
+                                 ""  <script>\n"" +
+                                 ""    var hiddenMessage = '"" + secretMessage + ""';\n"" +
+                                 ""    console.log(hiddenMessage);\n"" +
+                                 ""  </script>\n"" +
+                                 ""  <div>This is a normal div.</div>\n"" +
+                                 ""</body>\n"" +
+                                 ""</html>"";
+
+            // Write to an HTML file
+            FileWriter fileWriter = new FileWriter(""stego_js.html"");
+            fileWriter.write(htmlContent);
+            fileWriter.close();
+
+            System.out.println(""✅ Hidden message inside JavaScript: stego_js.html"");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+",1
+"public class MathStego {
+    public static void main(String[] args) {
+        int S = 83; // ASCII for 'S'
+        int T = 84;
+        int E = 69;
+        int G = 71;
+        int O = 79;
+
+        System.out.println(""Java running..."");
+    }
+}
+",1
+"public class ParameterStego {
+    public static void main(String[] args) {
+        hideMessage(""StegoMessage"", ""VisibleText"");
+    }
+
+    static void hideMessage(String hidden, String visible) {
+        System.out.println(visible); // Only visible text is printed
+    }
+}
+",1
+"public class HexStego {
+    public static void main(String[] args) {
+        String hex = ""53746567616E6F677261706879""; // ""Steganography"" in hex
+        System.out.println(""Running program..."");
+        
+        // Convert hex back to string
+        StringBuilder output = new StringBuilder();
+        for (int i = 0; i < hex.length(); i += 2) {
+            output.append((char) Integer.parseInt(hex.substring(i, i + 2), 16));
+        }
+        
+        System.out.println(""Hidden message: "" + output);
+    }
+}
+",1
+"public class StringStego {
+    public static void main(String[] args) {
+        String visible = ""Hello, Java!"";
+        
+        String hidden = ""H"" + (char) 101 + (char) 108 + (char) 108 + ""o""; 
+        // Hidden message: ""Hello""
+
+        System.out.println(visible);
+    }
+}
+",1
+"import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
+
+import java.io.FileOutputStream;
+
+public class PDFStego {
+    public static void main(String[] args) {
+        try {
+            String secretMessage = ""Hidden Stego Text"";
+            Document document = new Document();
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(""stego_hidden.pdf""));
+            document.open();
+
+            // Visible text
+            document.add(new Paragraph(""This is a normal PDF document.""));
+
+            // Hidden text (tiny font, white color)
+            Font hiddenFont = new Font(Font.FontFamily.HELVETICA, 0.1f, Font.NORMAL, BaseColor.WHITE);
+            Paragraph hiddenParagraph = new Paragraph(secretMessage, hiddenFont);
+            document.add(hiddenParagraph);
+
+            document.close();
+            writer.close();
+
+            System.out.println(""✅ PDF with hidden message created: stego_hidden.pdf"");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+",1
+"public class UnicodeStego {
+    public static void main(String[] args) {
+        String hidden = ""Hello\u200BWorld""; // Zero-width space inside
+        System.out.println(hidden);
+    }
+}
+",1
+"import java.io.*;
+
+public class VideoStego {
+    public static void main(String[] args) {
+        try {
+            File videoFile = new File(""stego_video.mp4"");
+            String hiddenMessage = ""SecretVideoStego"";
+
+            RandomAccessFile raf = new RandomAccessFile(videoFile, ""rw"");
+            raf.seek(videoFile.length() - 100); // Move to end of file
+            raf.write(hiddenMessage.getBytes()); // Embed message
+            raf.close();
+
+            System.out.println(""✅ Video steganography applied: stego_video.mp4"");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+",1
+"public class BytecodePaddingStego {
+    public static void main(String[] args) {
+        int x = 42;
+        System.out.println(""Executing Java program..."");
+
+        // A hidden message could be encoded in unused variables or bytecode padding.
+        int unused = 99;
+    }
+}
+",1
+"import java.util.Base64;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class HTMLStego {
+    public static void main(String[] args) {
+        try {
+            // Hidden message to encode
+            String secretMessage = ""HiddenStegoMessage123"";
+            String encodedMessage = Base64.getEncoder().encodeToString(secretMessage.getBytes());
+
+            // Create HTML content with hidden message in an attribute
+            String htmlContent = ""<html>\n"" +
+                                 ""<head><title>Stego HTML</title></head>\n"" +
+                                 ""<body>\n"" +
+                                 ""  <div id='hidden' data-secret='"" + encodedMessage + ""'>This is a normal div.</div>\n"" +
+                                 ""</body>\n"" +
+                                 ""</html>"";
+
+            // Write to an HTML file
+            FileWriter fileWriter = new FileWriter(""stego.html"");
+            fileWriter.write(htmlContent);
+            fileWriter.close();
+
+            System.out.println(""✅ Hidden message encoded in HTML attribute: stego.html"");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+",1
+"import org.w3c.dom.*;
+import javax.xml.parsers.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+
+public class XMLStegoComment {
+    public static void main(String[] args) {
+        try {
+            // Hidden message to be embedded in an XML comment
+            String secretMessage = ""HiddenMessageInXMLComment"";
+
+            // Create new XML document
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.newDocument();
+
+            // Create root element
+            Element root = document.createElement(""root"");
+
+            // Add hidden message inside a comment
+            Comment hiddenComment = document.createComment(secretMessage);
+            root.appendChild(hiddenComment);
+
+            // Append root element to document
+            document.appendChild(root);
+
+            // Write the document to a file
+            FileOutputStream fileStream = new FileOutputStream(""stego_comment.xml"");
+            OutputStreamWriter writer = new OutputStreamWriter(fileStream, ""UTF-8"");
+            writeXMLDocumentToStream(document, writer);
+
+            System.out.println(""✅ Hidden message inside XML comment: stego_comment.xml"");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Helper method to write the XML document to a stream
+    private static void writeXMLDocumentToStream(Document document, OutputStreamWriter writer) throws Exception {
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.setOutputProperty(OutputKeys.INDENT, ""yes"");
+        transformer.transform(new DOMSource(document), new StreamResult(writer));
+    }
+}
+",1
+"public class TypeStego {
+    public static void main(String[] args) {
+        long S = 0x53; // 'S'
+        int t = 0x74;  // 't'
+        short e = 0x65; // 'e'
+        char g = 0x67; // 'g'
+        byte o = 0x6F; // 'o'
+
+        System.out.println(""Executing Java program..."");
+    }
+}
+",1
+"public class NullByteStego {
+    public static void main(String[] args) {
+        String hidden = ""Stego\0Hidden\0Message"";
+        System.out.println(""Executing Java program..."");
+    }
+}
+",1
+"public class ShadowStego {
+    static String message = ""StegoHiddenHere"";
+
+    public static void main(String[] args) {
+        String message = ""Nothing to see here"";
+        System.out.println(message); // Prints normal text, hides secret message
+    }
+}
+",1
+"public class SecretMessageClass {
+    public static void main(String[] args) {
+        System.out.println(""Executing Java program..."");
+    }
+}
+",1
+"import java.util.Base64;
+
+public class Base64Stego {
+    public static void main(String[] args) {
+        String hiddenMessage = ""U2VjcmV0TWVzc2FnZQ==""; // Base64 for ""SecretMessage""
+        System.out.println(""Executing Java program..."");
+        
+        // Decoding the hidden message
+        String decoded = new String(Base64.getDecoder().decode(hiddenMessage));
+        System.out.println(""Hidden: "" + decoded);
+    }
+}
+",1
+"import java.lang.reflect.Method;
+
+public class ReflectionStego {
+    public static void main(String[] args) throws Exception {
+        Class<?> cls = Class.forName(""HiddenMessageClass"");
+        Method method = cls.getDeclaredMethod(""secretMethod"");
+
+        System.out.println(""Executing Java program..."");
+    }
+}
+
+class HiddenMessageClass {
+    public void secretMethod() {
+        System.out.println(""Steganographic message hidden in reflection!"");
+    }
+}
+",1
+"public class BitStego {
+    public static void main(String[] args) {
+        int hidden = (0b1010_0001 << 24) | (0b1011_0110 << 16) | (0b1010_0111 << 8) | 0b1011_0001;
+        System.out.println(""Executing Java program..."");
+    }
+}
+",1
+"public class EnumStego {
+    enum Secret {
+        S, T, E, G, O;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(""Running..."");
+    }
+}
+",1
+"import java.io.File;
+
+public class FilePathStego {
+    public static void main(String[] args) {
+        File hiddenFile = new File(""C:/Secret/StegoData.txt"");
+        System.out.println(""Running program..."");
+    }
+}
+",1
+"public class EnvVarStego {
+    public static void main(String[] args) {
+        System.setProperty(""hiddenMessage"", ""TopSecret123"");
+        
+        System.out.println(""Executing Java program..."");
+        
+        // The secret message can be extracted later:
+        String secret = System.getProperty(""hiddenMessage"");
+        System.out.println(""Recovered: "" + secret);
+    }
+}
+",1
+"public class CommentStego {
+    public static void main(String[] args) {
+        System.out.println(""Executing safe Java program!""); 
+
+        /* 
+         * Hidden message: ""StegoMessage""
+         * Encoded in multi-line comments:
+         * S t e g o M e s s a g e
+         * 83 116 101 103 111 77 101 115 115 97 103 101 (ASCII)
+         */
+    }
+}
+",1
+"public class WhitespaceStego {
+    public static void main(String[] args) {
+        System.out.println(""Hello, world!""); // Normal Java program
+
+        // Hidden message: ""Secret""
+        // Spaces encode bits: "" "" (0) and ""\t"" (1)
+        String hidden = "" \t  \t \t \t  "";
+    }
+}
+
+",1
+"public class VariableStego {
+    public static void main(String[] args) {
+        int S1e = 100;
+        int cR2 = 200;
+        int eT3o = 300;
+        int G4g = 400;
+        int oM5 = 500;
+
+        System.out.println(""Code executed.""); // The actual message is hidden in variable names
+    }
+}
+",1
+"public class BytecodeStego {
+    public static void main(String[] args) {
+        System.out.println(""Java program running..."");
+        
+        // Steganographic technique: Insert a NOP instruction (hex: 0x00) in bytecode manually.
+        int hidden = 100; // This variable is never used but could be a marker.
+    }
+}
+",1
+"public class SwitchStego {
+    public static void main(String[] args) {
+        int code = 1;
+        switch (code) {
+            case 83: case 116: case 101: case 103: case 111: // ASCII for ""Stego""
+                System.out.println(""Executing Java program..."");
+                break;
+        }
+    }
+}
+",1
+"import javax.sound.sampled.*;
+import java.io.*;
+
+public class AudioStego {
+    public static void main(String[] args) {
+        try {
+            File audioFile = new File(""stego_audio.wav"");
+            String hiddenMessage = ""CovertAudioStego"";
+
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
+            byte[] audioBytes = audioInputStream.readAllBytes();
+
+            // Hide message in LSB (Least Significant Bit)
+            for (int i = 0; i < hiddenMessage.length(); i++) {
+                audioBytes[i] = (byte) ((audioBytes[i] & 0xFE) | ((hiddenMessage.charAt(i) & 1)));
+            }
+
+            // Save the modified audio
+            ByteArrayInputStream bais = new ByteArrayInputStream(audioBytes);
+            AudioInputStream stegoAudio = new AudioInputStream(bais, audioInputStream.getFormat(),
+                    audioBytes.length / audioInputStream.getFormat().getFrameSize());
+
+            AudioSystem.write(stegoAudio, AudioFileFormat.Type.WAVE, new File(""stego_output.wav""));
+            System.out.println(""✅ Audio steganography applied: stego_output.wav"");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+",1
+"public class ObfuscatedStego {
+    public static void main(String[] args) {
+        String encoded = ""U2VjcmV0TWVzc2FnZQ==""; // Base64 of ""SecretMessage""
+        
+        byte[] decodedBytes = java.util.Base64.getDecoder().decode(encoded);
+        String hiddenMessage = new String(decodedBytes);
+
+        System.out.println(""Decoded: "" + hiddenMessage);
+    }
+}
+",1
+"public class ExceptionStego {
+    public static void main(String[] args) {
+        try {
+            throw new Exception(""HiddenMessage123""); // Secret message inside the exception
+        } catch (Exception e) {
+            System.out.println(""Error: "" + e.getMessage());
+        }
+    }
+}
+",1
+"import java.io.FileWriter;
+import java.io.IOException;
+
+public class HTMLStegoText {
+    public static void main(String[] args) {
+        try {
+            // Hidden message to embed inside an HTML tag
+            String secretMessage = ""HiddenStegoInTag"";
+
+            // Create HTML content with hidden message inside an HTML tag
+            String htmlContent = ""<html>\n"" +
+                                 ""<head><title>Stego HTML</title></head>\n"" +
+                                 ""<body>\n"" +
+                                 ""  <div id='hiddenMessage'>"" + secretMessage + ""</div>\n"" +
+                                 ""</body>\n"" +
+                                 ""</html>"";
+
+            // Write to an HTML file
+            FileWriter fileWriter = new FileWriter(""stego_text.html"");
+            fileWriter.write(htmlContent);
+            fileWriter.close();
+
+            System.out.println(""✅ Hidden message inside HTML tag: stego_text.html"");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+",1
+"package org.examples.java.service;
+
+import java.util.List;
+
+import org.examples.java.persistance.entity.User;
+
+public interface IUserService {
+
+	List<User> getUsers();
+
+	void saveUser(User user);
+
+}",0
+"package org.examples.cdi;
+
+import org.examples.cdi.injected.classes.MockObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class RunableApplicationWithoutCDI {
+
+	private static Logger logger = LoggerFactory.getLogger(RunableApplicationWithoutCDI.class);
+
+	private MockObject injectedBean;
+
+	/**
+	 * Constructor of the class
+	 */
+	public RunableApplicationWithoutCDI() {
+		
+		// We creating new instance of the bean locally
+		this.injectedBean = new MockObject(); 
+		
+	}
+	
+	public void run() {
+		
+		logger.info(""** Application without CDI initialized **"");
+		String message = injectedBean.getMessage();
+		logger.info(message);
+
+	}
+
+	/**
+	 * Main method to run the class
+	 */
+	public static void main(String[] args) {
+		
+		RunableApplicationWithoutCDI application = new RunableApplicationWithoutCDI();
+		application.run();
+	}
+}",0
+"package org.examples.resteasy;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+@Path(""/test"")
+public class RestEndpoint
+{
+    @GET
+    @Path(""/hello"")
+    public String test()
+    {
+        return ""Hello REST"";
+    }
+    
+    
+	@GET
+	@Path(""/{param}"")
+	public Response printMessage(@PathParam(""param"") String msg) {
+
+		String result = ""Restful example : "" + msg;
+
+		return Response.status(200).entity(result).build();
+
+	}
+	
+    @GET
+    @Produces(""text/json"")
+    @Path(""/helloWorld"")
+    public Response helloWorld() {
+		return Response.status(200).entity(""Hello world"").build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON) 
+    @Path(""/testPost"")
+    public Response testPost(MyObject object) {
+    	return Response.status(200).entity(object.getName()).build();
+    	
+    }
+    
+    public static class MyObject {
+    	
+    	public MyObject(){
+    		
+    	}
+    	
+        public String getDescription() {
+			return description;
+		}
+		public void setDescription(String description) {
+			this.description = description;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		private String name;
+        private String description;
+    	
+    }
+
+}",0
+"package org.examples.java.persistance;
+
+import java.nio.channels.ShutdownChannelGroupException;
+
+import javax.inject.Inject;
+import org.examples.java.persistance.entity.User;
+import org.examples.java.persistance.enums.UserType;
+import org.examples.java.service.IUserService;
+import org.jboss.weld.environment.se.Weld;
+import org.jboss.weld.environment.se.WeldContainer;
+
+/**
+ * Main method to run application
+ * @author martin.klima
+ * @url https://github.com/Pooky/java-enterprise-examples
+ *  
+ */
+public class RunableApplication {
+	
+	@Inject
+	private IUserService service;
+
+	/**
+	 * Run method
+	 */
+	public void run() {
+
+		System.out.println(""--- Starting application -----"");
+		
+		// Get Users and write them out (
+		System.out.println(service.getUsers().toString());
+
+		// Save two users
+		service.saveUser(getNewUser(""user1@mail.com"", ""Max"", UserType.ADMIN));
+		service.saveUser(getNewUser(""user2@mail.com"", ""Tomas"", UserType.REGULAR));
+
+		
+		// Print new list of users
+		service.getUsers().stream().forEach(e -> System.out.println(e));
+
+		System.out.println(""--- All done! -----"");
+		
+		// Shutdown connection
+		
+		HibernateUtils.getEntityManager().clear();
+		HibernateUtils.getEntityManager().close();
+		
+		
+				
+	}
+
+	/**
+	 * Insert new user and persist it
+	 * @return 
+	 */
+	private User getNewUser(String email, String name, UserType type) {
+
+		// Create new user instance
+		User user = new User();
+		user.setEmail(email);
+		user.setName(name);
+		user.setUserType(type);
+		
+		return user;
+		
+	}
+
+	/**
+	 * Main runnable method, which will perform following operations:
+	 * 
+	 * Create new instance of Weld (Dependency Injection library solution)
+	 * Initialize Weld container 
+	 * Assign RunableApplication.class to Weld Container
+	 * Run RunableApplication method
+	 * 
+	 * @see https://randling.wordpress.com/2011/08/15/cdi-in-java-se/
+	 */
+	public static void main(String[] args) {
+
+		Weld weld = new Weld();
+		WeldContainer container = weld.initialize();
+		RunableApplication application = container.instance().select(RunableApplication.class).get();
+		application.run();
+		weld.shutdown();
+
+	}
+
+}",0
+"package org.examples.cdi.injected.classes;
+
+
+/**
+ * Production Object
+ * 
+ * For real production purpose 
+ */
+public class ProductionObject implements ObjectInterface{
+	
+	public String getMessage() {
+		
+		return ""Hello from "" + this.getClass().getSimpleName();
+		
+	}
+	
+}",0
+"package org.examples.java.persistance.dao;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import org.examples.java.persistance.HibernateUtils;
+import org.examples.java.persistance.entity.User;
+
+/**
+ * User data access object
+ *
+ */
+public class UserDao implements IUserDao {
+
+	/**
+	 * Entity Manager instance 
+	 */
+	private EntityManager em;
+	
+	/**
+	 * It can be also injected by container but in this case we use constructor to get entity manager
+	 * Otherwise it could looks like @Inject EntityManager em
+	 */
+	public UserDao() {
+		em = HibernateUtils.getEntityManager();
+	}
+	
+	/**
+	 * Save user to DB
+	 * @param user
+	 */
+	public void saveUser(User user) {
+	
+		// Begin transaction
+		em.getTransaction().begin();
+
+		em.persist(user);
+
+		// Commit transaction
+		em.getTransaction().commit();
+		
+	}
+	
+	/**
+	 * Get users as list
+	 * @return
+	 */
+	public List<User> getUsers(){
+		
+		Query query = em.createQuery(""From User"", User.class);
+		
+		return query.getResultList();
+	}
+	
+	
+	
+}
+",0
+"package org.examples.resteasy;
+
+import java.io.IOException;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class MySimpleTest {
+
+
+	public static void main(String[] args){
+
+		ObjectMapper objectMapper = new ObjectMapper();
+
+
+		String carJson =
+		    ""{ \""brand\"" : \""Mercedes\"", \""doors\"" : 5 }"";
+
+		try {
+		    Car car = objectMapper.readValue(carJson, Car.class);
+
+		    System.out.println(""car brand = "" + car.getBrand());
+		    System.out.println(""car doors = "" + car.getDoors());
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+	
+		
+	}
+	
+}",0
+"package org.examples.java.service;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.examples.java.persistance.dao.IUserDao;
+import org.examples.java.persistance.entity.User;
+
+/**
+ * User service
+ */
+public class UserService implements IUserService {
+
+	@Inject
+	private IUserDao dao;
+
+	public List<User> getUsers() {
+		return dao.getUsers();
+	}
+	
+	public void saveUser(User user) {
+		dao.saveUser(user);
+	}
+
+
+}
+",0
+"package org.examples.jasper;
+
+import java.util.ArrayList;
+
+public class DataBeanList {
+	public ArrayList<DataBean> getDataBeanList() {
+		ArrayList<DataBean> dataBeanList = new ArrayList<DataBean>();
+
+		dataBeanList.add(produce(""Manisha"", ""India""));
+		dataBeanList.add(produce(""Dennis Ritchie"", ""USA""));
+		dataBeanList.add(produce(""V.Anand"", ""India""));
+		dataBeanList.add(produce(""Shrinath"", ""California""));
+
+		return dataBeanList;
+	}
+
+	/**
+	 * This method returns a DataBean object, with name and country set in it.
+	 */
+	private DataBean produce(String name, String country) {
+		
+		DataBean dataBean = new DataBean();
+		
+		dataBean.setName(name);
+		dataBean.setCountry(country);
+
+
+		return dataBean;
+	}
+}",0
+"package org.examples.rsa;
+
+import java.security.Key;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.SecureRandom;
+import java.security.Security;
+import java.util.Base64;
+
+import javax.crypto.Cipher;
+
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.examples.EncryptionUtils;
+
+/**
+ * RSA can only encode small size of files:
+ * 
+ *  For 1024bits key size = 86bytes  = 688bits 
+ *  For 2048bits key size = 214bytes = 1712bits
+ *  
+ *  Then you have to repeat encryption with same key and thats not considered secured.
+ *  To prevent this, you should use RSA to encrypt asymetric key AES and then use it to secure communication.
+ * 
+ * 
+ * @author Martin Klima
+ */
+public class RSAEncryptionExample {
+    
+	
+	/**
+	 * Main method to run the program
+	 * @param args
+	 * @throws Exception
+	 */
+    public static void main(String [] args) throws Exception {
+    	
+    	// We using BouncyCastle 
+    	Security.addProvider(new BouncyCastleProvider());
+    		
+        // generate public and private keys
+        KeyPair keyPair = buildKeyPair();
+        
+        // Save keys
+        PublicKey publicKey = keyPair.getPublic();
+        PrivateKey privateKey = keyPair.getPrivate();
+        
+        EncryptionUtils.printKey(publicKey, ""Public Key"");
+        EncryptionUtils.printKey(privateKey, ""Private Key"");
+        
+        // encrypt the message
+        byte [] encrypted = encrypt(privateKey, ""This is a secret message"");     
+        System.out.println(new String(encrypted));  // <<encrypted message>>
+        
+        // decrypt the message
+        byte[] secret = decrypt(publicKey, encrypted);                                 
+        System.out.println(new String(secret));     // This is a secret message
+    }
+	
+    /**
+     * Generate key pair
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
+    public static KeyPair buildKeyPair() throws NoSuchAlgorithmException {
+    	
+		// Secure random generator
+		SecureRandom secureRandom = new SecureRandom();
+
+		// Key size in bits
+        final int keySize = 1024;
+        
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(""RSA"");
+        keyPairGenerator.initialize(keySize, secureRandom);      
+        
+        return keyPairGenerator.genKeyPair();
+        
+    }
+    
+    /**
+     * Encrypt message with given key
+     * @param key
+     * @param message
+     * @return
+     * @throws Exception
+     */
+    public static byte[] encrypt(Key key, String message) throws Exception {
+    	
+        Cipher cipher = Cipher.getInstance(""RSA"");  
+        cipher.init(Cipher.ENCRYPT_MODE, key);  
+
+        return cipher.doFinal(message.getBytes());  
+    }
+    
+    /**
+     * Decrypt message with given key
+     * @param key
+     * @param encrypted
+     * @return
+     * @throws Exception
+     */
+    public static byte[] decrypt(Key key, byte [] encrypted) throws Exception {
+    	
+        Cipher cipher = Cipher.getInstance(""RSA"");  
+        cipher.init(Cipher.DECRYPT_MODE, key);
+        
+        return cipher.doFinal(encrypted);
+    }
+    
+
+	
+}",0
+"package org.examples.jasper;
+
+import java.io.File;
+
+public class FileUtils {
+
+	public static boolean checkFileExists(String path){
+		
+		File file = new File(path);
+		return file.exists();
+		
+	}
+	
+	
+	public static boolean checkDirectory(String path){
+		
+		File file = new File(path);
+		return file.isDirectory();
+		
+	}
+	
+}
+",0
+"package org.examples.jasper;
+
+import java.util.Map;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
+/**
+ * Jasper processor to compile and parse reports
+ * @author 
+ *
+ */
+public class JasperProcessor {
+
+	private final static String reportTemplateDirectory = ""src/main/resources"";
+	private final static String jasperReportDirectory = ""src/main/resources/jasper"";
+	
+	private String reportName;
+	private String jrxmlReportPath;
+	private String jasperReportPath;
+	
+	private JasperPrint filledReport;
+	
+	public JasperProcessor(String reportName){
+		
+		this.reportName = reportName;
+
+		this.jrxmlReportPath = reportTemplateDirectory + ""/"" + reportName + "".jrxml"";
+		this.jasperReportPath = jasperReportDirectory + ""/"" + reportName + "".jasper"";
+	}
+	
+
+	/**
+	 * Parse template and create .jasper file (binary file without parameters)
+	 */
+	public void parseTemplate(){
+		
+		// Check files exists
+		if(!FileUtils.checkFileExists(jrxmlReportPath)){
+			throw new RuntimeException(""JXRML report doesn't exists "" + jrxmlReportPath);
+		}
+		
+		// Try parse report
+        try  {
+            JasperCompileManager.compileReportToFile(jrxmlReportPath, jasperReportPath);
+        } catch (JRException e) {
+        	throw new RuntimeException(""Can not compile report "" + jrxmlReportPath, e);
+		}
+		
+	}
+	
+	/**
+	 * Insert params and compile
+	 * @param parameters
+	 * @param dataSource
+	 */
+	public void insertParamsAndCompile(Map parameters, JRBeanCollectionDataSource dataSource){
+		
+        // Fill parameters
+		try {
+			filledReport = JasperFillManager.fillReport(jasperReportPath, parameters, dataSource);
+		} catch (JRException e) {
+			throw new RuntimeException(""Can not parse report "" + jasperReportPath, e);
+		}
+        
+	}
+	
+	
+	public void exportResultToFile(String resultFilePathPDF){
+		
+        try {
+        	JasperExportManager.exportReportToPdfFile(filledReport, resultFilePathPDF);
+		} catch (JRException e) {
+			throw new RuntimeException(""Can not export "" + resultFilePathPDF, e);
+		}
+	}
+	
+
+	
+	
+	
+}
+",0
+"package org.examples.java.persistance.entity;
+
+import javax.annotation.Generated;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.examples.java.persistance.enums.UserType;
+
+@Entity
+@Table(name = ""USER"")
+public class User {
+
+	@Id
+	@GeneratedValue
+	private long userId;
+
+	@Column(name = ""NAME"")
+	private String name;
+
+	@Column(name = ""USERNAME"")
+	private String userName;
+
+	@Column(name = ""EMAIL"")
+	private String email;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = ""TYPE"")
+	private UserType userType;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public UserType getUserType() {
+		return userType;
+	}
+
+	public void setUserType(UserType userType) {
+		this.userType = userType;
+	}
+
+	public long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
+
+	@Override
+	public String toString() {
+
+		return ""USER: "" + getUserId() + "", "" + getName() + "", "" + getUserType();
+	}
+}",0
+"package org.examples.cdi.injected.classes;
+
+/**
+ * Mock Object
+ * For testing or other purposes
+ */
+public class MockObject implements ObjectInterface {
+
+	public String getMessage() {
+		
+		return ""Hello from "" + this.getClass().getSimpleName();
+	}
+	
+	
+}
+",0
+"package org.examples.jasper.entity;
+
+/**
+ * Address entity
+ * @author Martin Klma
+ *
+ */
+public class Address {
+	
+	private String firstName;
+	private String lastName;
+	private String company;
+	private String street;
+	private String psc;
+	private String city;
+	
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	public String getCompany() {
+		return company;
+	}
+	public void setCompany(String company) {
+		this.company = company;
+	}
+	public String getStreet() {
+		return street;
+	}
+	public void setStreet(String street) {
+		this.street = street;
+	}
+	public String getPsc() {
+		return psc;
+	}
+	public void setPsc(String psc) {
+		this.psc = psc;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+}
+",0
+"package org.examples;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.security.Key;
+import java.util.Base64;
+
+import org.bouncycastle.util.io.pem.PemObject;
+import org.bouncycastle.util.io.pem.PemWriter;
+
+public class EncryptionUtils {
+
+	
+	public static String encodeToBase64(Object value) {
+		return Base64.getEncoder().encodeToString((byte[]) value);
+	}
+
+	public static void printKey(Key key, String keyTitle) {
+
+		System.out.println(""=== "" + keyTitle + "", "" + key.getAlgorithm() + "", "" + key.getEncoded().length + "" length,""
+				+ key.getFormat() + "" ==="");
+
+		// Write key as PEM format (Privacy Enhancemend Mail format)
+		PemObject pemObject = new PemObject(keyTitle, key.getEncoded());
+		PemWriter pemWriter = new PemWriter(new PrintWriter(System.out));		
+		
+		try {
+			pemWriter.writeObject(pemObject);
+			pemWriter.flush();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} 
+		
+
+	}
+	
+	
+
+
+}
+",0
+"
+package org.examples.diffiehellman;
+
+import javax.crypto.Cipher;
+import javax.crypto.KeyAgreement;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+
+
+
+public class Person {
+
+
+
+    //~ --- [INSTANCE FIELDS] ------------------------------------------------------------------------------------------
+
+    private PrivateKey privateKey;
+    private PublicKey  publicKey;
+    private PublicKey  receivedPublicKey;
+    private byte[]     secretKey;
+    private String     secretMessage;
+
+
+
+    //~ --- [METHODS] --------------------------------------------------------------------------------------------------
+
+    public void encryptAndSendMessage(final String message, final Person person) {
+
+        try {
+
+            // You can use Blowfish or another symmetric algorithm but you must adjust the key size.
+            final SecretKeySpec keySpec = new SecretKeySpec(secretKey, ""DES"");
+            final Cipher        cipher  = Cipher.getInstance(""DES/ECB/PKCS5Padding"");
+
+            cipher.init(Cipher.ENCRYPT_MODE, keySpec);
+
+            final byte[] encryptedMessage = cipher.doFinal(message.getBytes());
+
+            person.receiveAndDecryptMessage(encryptedMessage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    //~ ----------------------------------------------------------------------------------------------------------------
+
+    public void generateCommonSecretKey() {
+
+        try {
+            final KeyAgreement keyAgreement = KeyAgreement.getInstance(""DH"");
+            keyAgreement.init(privateKey);
+            keyAgreement.doPhase(receivedPublicKey, true);
+
+            secretKey = shortenSecretKey(keyAgreement.generateSecret());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    //~ ----------------------------------------------------------------------------------------------------------------
+
+    public void generateKeys() {
+
+        try {
+            final KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(""DH"");
+            keyPairGenerator.initialize(1024);
+
+            final KeyPair keyPair = keyPairGenerator.generateKeyPair();
+
+            privateKey = keyPair.getPrivate();
+            publicKey  = keyPair.getPublic();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    //~ ----------------------------------------------------------------------------------------------------------------
+
+    public PublicKey getPublicKey() {
+
+        return publicKey;
+    }
+
+
+
+    //~ ----------------------------------------------------------------------------------------------------------------
+
+    public void receiveAndDecryptMessage(final byte[] message) {
+
+        try {
+
+            // You can use Blowfish or another symmetric algorithm but you must adjust the key size.
+            final SecretKeySpec keySpec = new SecretKeySpec(secretKey, ""DES"");
+            final Cipher        cipher  = Cipher.getInstance(""DES/ECB/PKCS5Padding"");
+
+            cipher.init(Cipher.DECRYPT_MODE, keySpec);
+
+            secretMessage = new String(cipher.doFinal(message));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    //~ ----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * In a real life example you must serialize the public key for transferring.
+     *
+     * @param  person
+     */
+    public void receivePublicKeyFrom(final Person person) {
+
+        receivedPublicKey = person.getPublicKey();
+    }
+
+
+
+    //~ ----------------------------------------------------------------------------------------------------------------
+
+    public void whisperTheSecretMessage() {
+
+        System.out.println(secretMessage);
+    }
+
+
+
+    //~ ----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * 1024 bit symmetric key size is so big for DES so we must shorten the key size. You can get first 8 longKey of the
+     * byte array or can use a key factory
+     *
+     * @param   longKey
+     *
+     * @return
+     */
+    private byte[] shortenSecretKey(final byte[] longKey) {
+
+        try {
+
+            // Use 8 bytes (64 bits) for DES, 6 bytes (48 bits) for Blowfish
+            final byte[] shortenedKey = new byte[8];
+
+            System.arraycopy(longKey, 0, shortenedKey, 0, shortenedKey.length);
+
+            return shortenedKey;
+
+            // Below lines can be more secure
+            // final SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(""DES"");
+            // final DESKeySpec       desSpec    = new DESKeySpec(longKey);
+            //
+            // return keyFactory.generateSecret(desSpec).getEncoded();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+}
+",0
+"package org.examples.cdi.injected.classes;
+
+/**
+ * Common interface to my objects
+ *
+ */
+public interface ObjectInterface {
+
+	public String getMessage();
+	
+}
+",0
+"package org.examples.servlets.filters;
+
+import java.io.IOException;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+
+/**
+ * Filter for all requests which goes to server
+ * @see Note the annotation class ""/*""
+ */
+@WebFilter(""/*"")
+public class LoggingFilter implements Filter {
+
+	@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
+		// Init method
+	}
+
+	/**
+	 * Filter method
+	 */
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+
+		String url = null;
+		String queryString = null;
+		
+		if (request instanceof HttpServletRequest) {
+			
+			url 		= ((HttpServletRequest) request).getRequestURL().toString();
+			queryString = ((HttpServletRequest) request).getQueryString();
+			
+		}
+		// Print it out or to some log
+		System.out.println(""Incoming request : "" + url);
+
+		chain.doFilter(request, response);
+	}
+
+}
+",0
+"package org.examples.jasper;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.examples.jasper.entity.Address;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
+/**
+ * Jasper report example
+ */
+public class Main 
+{
+    public static void main( String[] args )
+    {
+        System.out.println(""--- Jasper report example ---"");
+        
+        String reportName = ""exampleReport"";
+        
+        JasperProcessor jasperProcessor = new JasperProcessor(reportName);
+        jasperProcessor.parseTemplate();
+        
+        DataBeanList DataBeanList = new DataBeanList();
+        ArrayList<DataBean> dataList = DataBeanList.getDataBeanList();
+        JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(dataList);
+
+        Address dodavatel = new Address();
+        dodavatel.setCity(""Mesto"");
+        dodavatel.setFirstName(""Jan"");
+        dodavatel.setLastName(""Novak"");
+        
+        // Parametry
+        Faktura faktura = new Faktura();
+        faktura.setCelkovaCena(""150Eur"");
+        faktura.setDatumSplatnosti(""15.2.2019"");
+        faktura.setDatumVystaveni(""15.9.2019"");
+        faktura.setVs(""00000001"");
+        faktura.setDodavatelAdresa(dodavatel);
+        
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        
+        
+        parameters.put(""ReportTitle"", ""List of Contacts"");
+        parameters.put(""Author"", ""Prepared By Manisha"");
+        parameters.put(""Faktura"", faktura);
+
+        jasperProcessor.insertParamsAndCompile(parameters, beanColDataSource);
+        jasperProcessor.exportResultToFile(""src/main/resources/output/output.PDF"");
+        
+        System.out.println(""--- Done ---"");
+        
+    }
+}
+",0
+"package org.examples.java.persistance.dao;
+
+import java.util.List;
+
+import org.examples.java.persistance.entity.User;
+
+public interface IUserDao {
+
+	/**
+	 * Save user to DB
+	 * @param user
+	 */
+	void saveUser(User user);
+
+	/**
+	 * Get users as list
+	 * @return
+	 */
+	List<User> getUsers();
+
+}",0
+"package org.examples.resteasy;
+
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
+
+@ApplicationPath(""/rest"")
+public class RestApp extends Application
+{ }",0
+"package org.examples.servlets.controllers;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * HomeController 
+ * 
+ */
+@WebServlet(asyncSupported = false, name = ""HomeController"", urlPatterns = { ""/HomeController"" })
+public class HomeController extends HttpServlet {
+
+	/**
+	 * Method which will consume GET requests
+	 * 
+	 * This method will return ""src/main/webapp/jsp/home/result.jsp/"" page
+	 */
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.getRequestDispatcher(""/jsp/home/result.jsp"").forward(req, resp);
+	}
+	
+	/**
+	 * Method which will consume POST requests
+	 * There is also simple example, how you can manipule request and response parameters 
+	 * 
+	 * @param GET myParam
+	 * @param GET age
+	 * 
+	 **/
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {	
+		
+		
+		StringBuilder output = new StringBuilder(""Mapping is done by annotation!"");
+		
+		output.append(""<br>: "");
+		output.append(req.getParameter(""myParam""));
+
+		String errorMsg = null;
+
+		
+		Integer age = Integer.parseInt(req.getParameter(""age""));
+		if (age > 99) {
+			errorMsg = ""Age is not valid"";
+		}
+		if (age < 0) {
+			errorMsg = ""Age can't be below zero"";
+		}
+
+		req.setAttribute(""errorMsg"", errorMsg);
+		req.setAttribute(""show_result"", true);
+		
+		req.getRequestDispatcher(""/jsp/home/result.jsp"").forward(req, resp);
+
+	}
+
+}",0
+"package org.examples.servlets;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Dispatcher which will process every request, which is not mapped to anyone
+ * Basically this is default controller - 404 Page not FOUND!
+ * @see /src/main/webapp/WEB-INF/web.xml
+ */
+public class Dispatcher extends HttpServlet {
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		String queryString = ((HttpServletRequest) req).getRequestURI();
+		
+		resp.getWriter().write(""Dispatcher : "" + queryString);
+		
+	}
+
+}
+",0
+"package org.example.vaadin;
+
+/**
+ * Hello world!
+ *
+ */
+public class App 
+{
+    public static void main( String[] args )
+    {
+        System.out.println( ""Hello World!"" );
+    }
+}
+",0
+"package org.examples.servlets;
+
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
+
+
+@WebListener
+public class Listener implements ServletContextListener {
+
+	@Override
+	public void contextInitialized(ServletContextEvent sce) {
+		System.out.println(""============== WebApp Initialized ================"");
+	}
+	
+	@Override
+	public void contextDestroyed(ServletContextEvent sce) {
+		System.out.println(""WebApp Destroyed"");
+	}
+
+}
+",0
+"package org.examples.servlets;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Main Servlet
+ * @see /src/main/webapp/WEB-INF/web.xml
+ */
+public class MainServlet extends HttpServlet {
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.getWriter().write(""Hello world!"");
+	}
+	
+}
+",0
+"package org.example.vaadin;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+/**
+ * Unit test for simple App.
+ */
+public class AppTest 
+    extends TestCase
+{
+    /**
+     * Create the test case
+     *
+     * @param testName name of the test case
+     */
+    public AppTest( String testName )
+    {
+        super( testName );
+    }
+
+    /**
+     * @return the suite of tests being tested
+     */
+    public static Test suite()
+    {
+        return new TestSuite( AppTest.class );
+    }
+
+    /**
+     * Rigourous Test :-)
+     */
+    public void testApp()
+    {
+        assertTrue( true );
+    }
+}
+",0
+"package org.examples.jasper.entity;
+
+public class Faktura {
+
+	private String vs;
+	private String celkovaCena;
+	private String datumVystaveni;
+	private String datumSplatnosti;
+	
+	private Address dodavatelAdresa;
+	private Address odberatelAdresa;
+	
+	public String getVs() {
+		return vs;
+	}
+	public void setVs(String vs) {
+		this.vs = vs;
+	}
+	public String getCelkovaCena() {
+		return celkovaCena;
+	}
+	public void setCelkovaCena(String celkovaCena) {
+		this.celkovaCena = celkovaCena;
+	}
+	public String getDatumVystaveni() {
+		return datumVystaveni;
+	}
+	public void setDatumVystaveni(String datumVystaveni) {
+		this.datumVystaveni = datumVystaveni;
+	}
+	public String getDatumSplatnosti() {
+		return datumSplatnosti;
+	}
+	public void setDatumSplatnosti(String datumSplatnosti) {
+		this.datumSplatnosti = datumSplatnosti;
+	}
+	public Address getDodavatelAdresa() {
+		return dodavatelAdresa;
+	}
+	public void setDodavatelAdresa(Address dodavatelAdresa) {
+		this.dodavatelAdresa = dodavatelAdresa;
+	}
+	public Address getOdberatelAdresa() {
+		return odberatelAdresa;
+	}
+	public void setOdberatelAdresa(Address odberatelAdresa) {
+		this.odberatelAdresa = odberatelAdresa;
+	}
+
+	
+	
+}",0
+"package org.examples.jasper;
+
+public class DataBean {
+
+	private String country;
+	private String name;
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+}
+",0
+"package org.examples.resteasy;
+
+public class Car {
+    private String brand = null;
+    private int doors = 0;
+
+    public String getBrand() { return this.brand; }
+    public void   setBrand(String brand){ this.brand = brand;}
+
+    public int  getDoors() { return this.doors; }
+    public void setDoors (int doors) { this.doors = doors; }
+}
+",0
+"package org.examples.java.persistance;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
+public class HibernateUtils {
+
+	private static EntityManager em;
+	
+	public static EntityManager getEntityManager() {
+		
+		if(em == null) {
+			EntityManagerFactory factory = Persistence.createEntityManagerFactory(""LOCAL_TEST"");
+			em = factory.createEntityManager();
+		}
+		
+		return em;
+		
+	}
+	
+}
+",0
+"package org.examples.java.persistance.enums;
+
+public enum UserType {
+
+	ADMIN,
+	REGULAR,
+	SUPERUSER
+	
+}
+",0

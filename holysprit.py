@@ -285,7 +285,7 @@ def crawl_for_java_files(base_dir):
 
 
 # Start the analysis on a test file (replace with an actual file path)
-base_dir = "./"  # Change to the directory containing the files
+base_dir = "./DigitalSteganography"  # Change to the directory containing the files
 
 java_files = crawl_for_java_files(base_dir)
 
