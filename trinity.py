@@ -8,6 +8,8 @@ from math import log2
 import matplotlib.pyplot as plt
 from scipy.fft import fft, fftfreq
 
+stegoFiles = set()
+
 # Step 1: Read the Java file
 def read_java_file(file_path):
     """Reads the content of a Java file."""
@@ -15,31 +17,27 @@ def read_java_file(file_path):
         return file.read()
 
 # Step 2: Parse Java Classes and Dependencies using javalang
-def parse_classes_and_dependencies(text):
-    """Parses Java classes, interfaces, and their dependencies using javalang."""
-    
-    # Parse the Java source code using javalang
-    tree = javalang.parse.parse(text)
-    
-    # Extract classes and interfaces from the parse tree
-    classes = []
-    imports = set()
-    method_references = set()
 
-    for node in tree:
+def parse_classes_and_dependencies(text):
+    try:
+        tree = javalang.parse.parse(text)
+    except javalang.parser.JavaSyntaxError as e:
+        print(f"Java syntax error: {e}")
+        return set(), set(), set()
+    
+    imports, classes, method_references = set(), set(), set()
+    
+    for path, node in tree:
         if isinstance(node, javalang.tree.ClassDeclaration):
-            classes.append(node.name)
-            # Check if the class has any references to other classes in its fields or methods
+            classes.add(node.name)
             for method in node.methods:
-                for param in method.parameters:
-                    method_references.add(param.type.name)
                 if method.return_type:
                     method_references.add(method.return_type.name)
-
+                for param in method.parameters:
+                    method_references.add(param.type.name)
         elif isinstance(node, javalang.tree.Import):
-            # Collect imported classes
-            imports.add(node.path.split('.')[-1])
-
+            imports.add(node.path)
+    
     return classes, imports, method_references
 
 # Step 3: Calculate character frequency in the file
@@ -141,13 +139,14 @@ def detect_hidden_message(text):
         print("No hidden message pattern detected.")
 
 # Step 8: Detect steganography based on anomalies and entropy
-def detect_steganography(all_anomalies, entropy):
+def detect_steganography(java_file, all_anomalies, entropy):
     """Detect steganography based on anomalies and entropy."""
     # Using entropy to determine if the file is "normal"
     if entropy < 4 and len(all_anomalies) < 5:
         print("No Steganography Detected.")
     else:
         print("Steganography Likely Detected!")
+        stegoFiles.add(java_file)
 
 # Step 9: Run detection
 def main(file_path):
@@ -190,18 +189,48 @@ def main(file_path):
     
     # Step 6: Perform Fourier Analysis (optional for more in-depth analysis)
     print("\nPerforming Fourier Analysis...")
-    fft_magnitude = fourier_analysis(char_freq)
+    #fft_magnitude = fourier_analysis(char_freq)
     
     # Step 7: Optional: Plot the character frequencies
-    plot_char_frequencies(char_freq)
+    #plot_char_frequencies(char_freq)
 
     # Step 8: Detect hidden message patterns
     detect_hidden_message(text)
     
     # Step 9: Detect steganography based on anomalies and entropy
     all_anomalies = {**gesd_anomalies, **zscore_anomalies, **quantile_anomalies}
-    detect_steganography(all_anomalies, entropy)
+    detect_steganography(file_path, all_anomalies, entropy)
+
+
+def crawl_for_java_files(base_dir):
+    # List to store all Java file paths
+    java_files = []
+    
+    # Walk through the directory structure
+    for root, _, files in os.walk(base_dir):
+        for file in files:
+            if file.endswith(".java"):  # Check if the file is a .java file
+                java_files.append(os.path.join(root, file))  # Add to the list
+    
+    return java_files
+
+
+
+base_dir = "./GeoPointer"
+
+java_files = crawl_for_java_files(base_dir)
+
+
 
 if __name__ == "__main__":
-    file_path = "SimpleMessage.java"  # Replace with the actual file path
-    main(file_path)
+    if java_files:
+        print("Found Java files:")
+        for java_file in java_files:
+            main_file = java_file
+            print("Analyzing: " + java_file)
+            print(end="\n")
+            main(main_file)
+    print("Printing the Files where Steganography is detected", end="\n")
+    if stegoFiles:
+        for _path in stegoFiles:
+            print(_path)

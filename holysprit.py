@@ -25,7 +25,12 @@ def read_java_file(file_path):
 
 # Step 2: Extract dependencies and classes
 def parse_classes_and_dependencies(text):
-    tree = javalang.parse.parse(text)
+    try:
+        tree = javalang.parse.parse(text)
+    except javalang.parser.JavaSyntaxError as e:
+        print(f"Java syntax error: {e}")
+        return set(), set(), set()
+    
     imports, classes, method_references = set(), set(), set()
     
     for path, node in tree:
@@ -40,6 +45,7 @@ def parse_classes_and_dependencies(text):
             imports.add(node.path)
     
     return classes, imports, method_references
+
 
 # Step 3: Fetch imported Java files
 def fetch_imported_files(imports, base_dir):
@@ -95,7 +101,7 @@ def detect_steganography(text, anomalies, entropy, fft_values):
         print("⚠️ Possible steganography detected!" if prediction[0] == 1 else "✅ No steganography detected.")
     else:
         print("⚠️ ML model not loaded, using rule-based detection.")
-        if entropy > 4.5 or len(anomalies) > 10:
+        if entropy > 4 or len(anomalies) > 10:
             print("⚠️ Possible steganography detected!")
         else:
             print("✅ No steganography detected.")
@@ -202,7 +208,7 @@ def detect_steganography(text, all_anomalies, entropy, fft_values):
         print("Steganography Likely Detected!")
 
 # Step 15: Main function to check for steganography
-def main(base_dir, main_file):
+def luke(base_dir, main_file):
     file_path = os.path.join(base_dir, main_file)
     if not os.path.exists(file_path):
         print("File not found!")
@@ -231,7 +237,7 @@ def main(base_dir, main_file):
 
 def analyze_all_java_files(base_dir, main_file):
     # Read and process the main file
-    file_path = os.path.join(base_dir, main_file)
+    file_path = main_file
     if not os.path.exists(file_path):
         print("Main file not found!")
         return
@@ -264,9 +270,29 @@ def analyze_all_java_files(base_dir, main_file):
     detect_hidden_message(text)
 
 
-# Start the analysis on a test file (replace with an actual file path)
-base_dir = "./jsoup"  # Change to the directory containing the files
-main_file = "./src/main/java/org/jsoup/examples/HtmlToPlainText.java"  # Replace with your Java file
 
-# Uncomment below to run the analysis
-analyze_all_java_files(base_dir, main_file)
+def crawl_for_java_files(base_dir):
+    # List to store all Java file paths
+    java_files = []
+    
+    # Walk through the directory structure
+    for root, _, files in os.walk(base_dir):
+        for file in files:
+            if file.endswith(".java"):  # Check if the file is a .java file
+                java_files.append(os.path.join(root, file))  # Add to the list
+    
+    return java_files
+
+
+# Start the analysis on a test file (replace with an actual file path)
+base_dir = "./"  # Change to the directory containing the files
+
+java_files = crawl_for_java_files(base_dir)
+
+if java_files:
+    print("Found Java files:")
+    for java_file in java_files:
+        main_file = java_file
+        print("Analyzing: " + java_file)
+        print(end="\n")
+        analyze_all_java_files(base_dir, main_file)

@@ -1,0 +1,14 @@
+Found Java files:
+Analyzing: ./android-java-examples/app/src/main/java/com/example/inputprosjekt/MainActivity.java
+
+Classes: {'MainActivity'}
+Imports: {'androidx.appcompat.app.AppCompatActivity', 'java.util.Calendar', 'java.text.SimpleDateFormat', 'android.os.Bundle', 'android.content.res.Resources', 'android.widget.TextView'}
+Method References: {'Bundle'}
+Anomalies detected using Z-Score: {'e': 2.749050093865226, ' ': 5.113774802568409, 't': 2.5519897014732935}
+Anomalies detected using GESD: {' ': 5.113774802568409}
+Anomalies detected using Quantile: {'a': 65, 'e': 104, ' ': 176, 'i': 55, 't': 98, 'r': 61}
+Fourier Transform Values: [97748.          4420.64003822  1601.22444023 ...   799.73766351
+  1601.22444023  4420.64003822]
+Entropy: 4.123618331721612
+Steganography Likely Detected!
+No hidden message pattern detected.

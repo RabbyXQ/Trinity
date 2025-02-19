@@ -1,0 +1,170 @@
+Found Java files:
+Analyzing: ./DigitalSteganography/src/TextSteganography/Text_Decryption.java
+
+Classes: {'Text_Decryption'}
+Imports: {'javax.swing.JOptionPane'}
+Method References: {'String', 'java'}
+Anomalies detected using Z-Score: {' ': 7.70489817920574}
+Anomalies detected using GESD: {' ': 7.70489817920574}
+Anomalies detected using Quantile: {' ': 2315, 'o': 492, 'a': 697, 'n': 474, 'e': 644, 't': 558, '.': 462}
+Fourier Transform Values: [914450.          10101.85250144   9767.01242418 ...   9016.10947876
+   9767.01242418  10101.85250144]
+Entropy: 4.392734134153395
+Steganography Likely Detected!
+No hidden message pattern detected.
+Analyzing: ./DigitalSteganography/src/TextSteganography/Text_Encryption.java
+
+Classes: {'Text_Encryption'}
+Imports: {'javax.swing.JOptionPane'}
+Method References: {'String', 'java'}
+Anomalies detected using Z-Score: {'a': 2.012041283405019, ' ': 7.811616251351344}
+Anomalies detected using GESD: {' ': 7.811616251351344}
+Anomalies detected using Quantile: {'a': 683, 'e': 600, ' ': 2270, 't': 542, 'n': 467, 'o': 477, '.': 456}
+Fourier Transform Values: [890416.           9391.4096307    8865.92299309 ...   6891.66889148
+   8865.92299309   9391.4096307 ]
+Entropy: 4.392454776980233
+Steganography Likely Detected!
+No hidden message pattern detected.
+Analyzing: ./DigitalSteganography/src/ImageSteganography/Encryption.java
+
+Classes: {'Encryption'}
+Imports: {'java.awt.image', 'javax.swing', 'javax.imageio', 'Coding.SendEmail', 'java.awt', 'java.awt.event'}
+Method References: {'boolean', 'BufferedImage', 'int', 'byte', 'ActionEvent', 'String', 'java'}
+Anomalies detected using Z-Score: {'e': 2.891723720149252, ' ': 7.4890127713067685}
+Anomalies detected using GESD: {' ': 7.4890127713067685}
+Anomalies detected using Quantile: {'a': 351, 'e': 734, ' ': 1735, 't': 464, 'n': 354, 'o': 327, 'r': 295, '\n': 267, 's': 294, 'i': 365}
+Fourier Transform Values: [696267.          14081.64547993   9740.74789248 ...   9629.28631816
+   9740.74789248  14081.64547993]
+Entropy: 4.221439143820001
+Steganography Likely Detected!
+No hidden message pattern detected.
+Analyzing: ./DigitalSteganography/src/ImageSteganography/Decryption.java
+
+Classes: {'Decryption'}
+Imports: {'java.awt.image', 'javax.swing', 'javax.imageio', 'java.awt', 'java.awt.event'}
+Method References: {'boolean', 'BufferedImage', 'java', 'byte', 'ActionEvent', 'int'}
+Anomalies detected using Z-Score: {'e': 2.549031817867687, ' ': 7.311997102921235}
+Anomalies detected using GESD: {' ': 7.311997102921235}
+Anomalies detected using Quantile: {'a': 233, 'e': 422, ' ': 1084, 't': 336, 'n': 226, 'o': 213, 'r': 178, 'i': 233}
+Fourier Transform Values: [425649.           8808.15594626   2748.25166381 ...   7495.22983362
+   2748.25166381   8808.15594626]
+Entropy: 4.157581141669627
+Steganography Likely Detected!
+No hidden message pattern detected.
+Analyzing: ./DigitalSteganography/src/Coding/HomePage.java
+
+Classes: {'HomePage'}
+Imports: {'Audio_Steganography.Encode_Audio', 'TextSteganography.Text_Decryption', 'Audio_Steganography.Decode_Audio', 'ImageSteganography.Encryption', 'ImageSteganography.Decryption', 'java.awt.Color', 'TextSteganography.Text_Encryption'}
+Method References: {'String', 'java'}
+Anomalies detected using Z-Score: {' ': 7.570690692230603}
+Anomalies detected using GESD: {' ': 7.570690692230603}
+Anomalies detected using Quantile: {'a': 983, 'e': 981, ' ': 3442, 'o': 881, 'n': 784, 't': 972, '.': 703}
+Fourier Transform Values: [1408917.           21682.65270816   13957.72279789 ...   11628.24616413
+   13957.72279789   21682.65270816]
+Entropy: 4.388941480935372
+Steganography Likely Detected!
+No hidden message pattern detected.
+Analyzing: ./DigitalSteganography/src/Coding/SendEmail.java
+
+Classes: {'SendEmail'}
+Imports: {'javax.mail.Multipart', 'javax.mail.internet.MimeMessage', 'javax.mail.Session', 'javax.mail.Transport', 'java.io.IOException', 'javax.mail.Message', 'javax.mail.internet.MimeBodyPart', 'javax.swing.JFileChooser', 'java.io.File', 'javax.swing.JOptionPane', 'javax.mail.internet.InternetAddress', 'javax.mail.internet.MimeMultipart', 'java.util.Properties', 'javax.mail.PasswordAuthentication', 'javax.mail.MessagingException', 'java.awt.Color'}
+Method References: {'boolean', 'java', 'String'}
+Anomalies detected using Z-Score: {' ': 7.9780012474637205}
+Anomalies detected using GESD: {' ': 7.9780012474637205}
+Anomalies detected using Quantile: {'a': 1072, 'e': 1074, ' ': 3893, 'o': 726, 'n': 645, 't': 917, '.': 725}
+Fourier Transform Values: [1441091.            8225.4977186     9919.19567573 ...   30855.90342999
+    9919.19567573    8225.4977186 ]
+Entropy: 4.327155650283713
+Steganography Likely Detected!
+No hidden message pattern detected.
+Analyzing: ./DigitalSteganography/src/Coding/SplashScreenFrame.java
+
+Classes: {'SplashScreenFrame', 'SplashThread'}
+Imports: set()
+Method References: set()
+Anomalies detected using Z-Score: {' ': 7.853469042537675}
+Anomalies detected using GESD: {' ': 7.853469042537675}
+Anomalies detected using Quantile: {'a': 333, 'e': 251, ' ': 1160, 'o': 206, 'n': 194, 'r': 173, 't': 189, '.': 184}
+Fourier Transform Values: [392838.           8916.7070499    6440.321238   ...  14081.08785884
+   6440.321238     8916.7070499 ]
+Entropy: 4.268340044805349
+Steganography Likely Detected!
+No hidden message pattern detected.
+Analyzing: ./DigitalSteganography/src/Coding/Main.java
+
+Classes: {'Main'}
+Imports: set()
+Method References: {'String'}
+Anomalies detected using Z-Score: {' ': 6.923051872837642}
+Anomalies detected using GESD: {' ': 6.923051872837642}
+Anomalies detected using Quantile: {'a': 97, 'e': 119, ' ': 436, 'o': 72, 'l': 81}
+Fourier Transform Values: [138363.           3439.33038024   6967.71537153 ...   3203.63432199
+   6967.71537153   3439.33038024]
+Entropy: 3.958025675710089
+No Steganography Detected.
+No hidden message pattern detected.
+Analyzing: ./DigitalSteganography/src/Coding/LoginForm.java
+
+Classes: {'LoginForm'}
+Imports: {'java.awt.event.KeyEvent', 'javax.swing.BorderFactory', 'java.awt.Color', 'javax.swing.JOptionPane', 'javax.swing.border.Border'}
+Method References: {'String', 'java'}
+Anomalies detected using Z-Score: {'e': 2.220930410944882, ' ': 7.81712956661228}
+Anomalies detected using GESD: {' ': 7.81712956661228}
+Anomalies detected using Quantile: {'a': 881, 'e': 1133, ' ': 3489, 'o': 748, 'n': 633, 'r': 488, 't': 883, '.': 591, 's': 474}
+Fourier Transform Values: [1332520.           30299.23097568    1819.34750633 ...    7256.27876514
+    1819.34750633   30299.23097568]
+Entropy: 4.342606962933164
+Steganography Likely Detected!
+No hidden message pattern detected.
+Analyzing: ./DigitalSteganography/src/Audio_Steganography/AudioPlayer.java
+
+Classes: {'AudioPlayer'}
+Imports: {'javax.sound.sampled.AudioFormat', 'javax.sound.sampled.LineEvent', 'javax.sound.sampled.UnsupportedAudioFileException', 'javax.sound.sampled.AudioSystem', 'javax.sound.sampled.AudioInputStream', 'java.io.IOException', 'javax.sound.sampled.LineUnavailableException', 'javax.sound.sampled.Clip', 'java.io.File', 'javax.sound.sampled.LineListener', 'javax.sound.sampled.DataLine'}
+Method References: {'String', 'LineEvent'}
+Anomalies detected using Z-Score: {'a': 2.004228008472042, 'e': 2.5337432576790784, ' ': 3.109303311164987, 'i': 2.0963176170297877}
+Anomalies detected using GESD: {}
+Anomalies detected using Quantile: {'a': 126, 'e': 149, ' ': 174, 'i': 130}
+Fourier Transform Values: [177886.           6452.87512889   8625.71710489 ...   1201.97243192
+   8625.71710489   6452.87512889]
+Entropy: 4.17518573851681
+Steganography Likely Detected!
+No hidden message pattern detected.
+Analyzing: ./DigitalSteganography/src/Audio_Steganography/Decode_Audio.java
+
+Classes: {'Decode_Audio'}
+Imports: {'javax.sound.sampled.UnsupportedAudioFileException', 'javax.sound.sampled.AudioInputStream', 'java.io.IOException', 'javax.crypto.Cipher', 'javax.swing.JFileChooser', 'java.io.PrintWriter', 'javax.crypto.spec.PBEKeySpec', 'java.security.spec.InvalidKeySpecException', 'Coding.SendEmail', 'javax.crypto.BadPaddingException', 'javax.crypto.SecretKeyFactory', 'java.io.File', 'javax.crypto.IllegalBlockSizeException', 'javax.crypto.SecretKey', 'javax.crypto.NoSuchPaddingException', 'java.security.InvalidKeyException', 'javax.crypto.spec.PBEParameterSpec', 'javax.sound.sampled.AudioSystem', 'java.io.FileNotFoundException', 'java.security.InvalidAlgorithmParameterException', 'javax.swing.JOptionPane', 'java.security.NoSuchAlgorithmException'}
+Method References: {'boolean', 'byte', 'char', 'String', 'java'}
+Anomalies detected using Z-Score: {' ': 7.695942454269778, 'e': 2.41291678709897}
+Anomalies detected using GESD: {' ': 7.695942454269778}
+Anomalies detected using Quantile: {' ': 3947, 'o': 887, 'a': 1006, 'n': 756, 'e': 1403, 't': 1148, 'i': 688, 'r': 611, '.': 649, '=': 900}
+Fourier Transform Values: [1685503.           44122.02860613   26563.42911851 ...   30020.71622136
+   26563.42911851   44122.02860613]
+Entropy: 4.388894387513707
+Steganography Likely Detected!
+No hidden message pattern detected.
+Analyzing: ./DigitalSteganography/src/Audio_Steganography/Encode_Audio.java
+
+Classes: {'CaptureThread', 'Encode_Audio'}
+Imports: {'javax.sound.sampled.Mixer', 'javax.sound.sampled.UnsupportedAudioFileException', 'javax.sound.sampled.AudioInputStream', 'java.awt.Cursor', 'java.io.IOException', 'javax.crypto.Cipher', 'javax.sound.sampled.LineUnavailableException', 'javax.swing.JFileChooser', 'javax.crypto.spec.PBEKeySpec', 'java.security.spec.InvalidKeySpecException', 'Coding.SendEmail', 'javax.sound.sampled.TargetDataLine', 'javax.sound.sampled.AudioFormat', 'javax.crypto.BadPaddingException', 'javax.crypto.SecretKeyFactory', 'java.io.File', 'java.io.ByteArrayOutputStream', 'javax.crypto.IllegalBlockSizeException', 'java.awt.Font', 'javax.crypto.SecretKey', 'javax.crypto.NoSuchPaddingException', 'javax.swing.ImageIcon', 'java.security.InvalidKeyException', 'javax.sound.sampled.DataLine', 'javax.sound.sampled.AudioFileFormat', 'javax.crypto.spec.PBEParameterSpec', 'javax.sound.sampled.AudioSystem', 'java.security.InvalidAlgorithmParameterException', 'java.io.ByteArrayInputStream', 'javax.swing.JOptionPane', 'java.security.NoSuchAlgorithmException', 'javax.swing.filechooser.FileFilter'}
+Method References: {'boolean', 'File', 'int', 'byte', 'char', 'String', 'java', 'AudioFormat'}
+Anomalies detected using Z-Score: {'e': 2.4151876012567324, ' ': 7.60793423706105}
+Anomalies detected using GESD: {' ': 7.60793423706105}
+Anomalies detected using Quantile: {'a': 1901, 'e': 2475, ' ': 6866, 'i': 1320, 'o': 1604, 't': 2083, 'n': 1477, 'r': 1211, '=': 1416}
+Fourier Transform Values: [3069027.           57452.61197284   44290.50120527 ...   20672.35012589
+   44290.50120527   57452.61197284]
+Entropy: 4.379010639898907
+Steganography Likely Detected!
+No hidden message pattern detected.
+Analyzing: ./DigitalSteganography/src/Audio_Steganography/RecordTimer.java
+
+Classes: {'RecordTimer'}
+Imports: {'java.util.Date', 'java.text.SimpleDateFormat', 'java.util.TimeZone', 'java.text.DateFormat', 'javax.swing.JLabel'}
+Method References: {'String'}
+Anomalies detected using Z-Score: {'e': 2.7288191887623, ' ': 5.431856796762747}
+Anomalies detected using GESD: {' ': 5.431856796762747}
+Anomalies detected using Quantile: {'a': 72, 'e': 138, ' ': 248, 'i': 86, 't': 98, 'r': 80, '\n': 70, '\t': 97}
+Fourier Transform Values: [129021.          11913.68529967   3103.56983347 ...   2226.63270861
+   3103.56983347  11913.68529967]
+Entropy: 3.923038697595316
+No Steganography Detected.
+No hidden message pattern detected.
